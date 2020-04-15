@@ -1,0 +1,26 @@
+nav.navbar.bg-dark
+    h1
+        a(href='/')
+            i.fas.fa-code
+            |  DevConnector
+    ul
+        li
+            a(href='/profiles') Developers
+
+        - if(user)
+            li
+                a(href='#') Posts
+            li
+                | |
+                a(href='#' title='Dashboard')
+                    i.fas.fa-user
+                    span.hide-sm Dashboard
+            li
+                a#logout(href='#' title='Logout')
+                    i.fas.fa-sign-out-alt
+                    span#logouttext.hide-sm Logout
+        - else
+            li
+                a(href='/register') Register
+            li
+                a(href='/login') Login

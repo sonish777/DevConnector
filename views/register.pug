@@ -1,0 +1,25 @@
+extends base
+
+block content
+    section.container
+        h1.large.text-primary Sign Up
+        p.lead
+            i.fas.fa-user
+            |  Create Your Account
+        form.form()
+            .form-group
+                input#name(type='text' placeholder='Name' name='name' required='')
+                label#ename(style="color:red;")
+            .form-group
+                input#email(type='email' placeholder='Email Address' name='email')
+                label#eemail(style="color:red;")
+            .form-group
+                input#password(type='password' placeholder='Password' name='password' minlength='6')
+                label#epassword(style="color:red;")
+            .form-group
+                input#confirmPassword(type='password' placeholder='Confirm Password' name='password2' minlength='6')
+                label#ecpassword(style="color:red;")
+            input#register.btn.btn-primary(type='button' value='Register')
+        p.my-1
+            | Already have an account? 
+            a(href='/login') Sign In

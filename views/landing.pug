@@ -1,0 +1,16 @@
+extends base
+
+block content
+    - if(user)
+        script.
+            window.location.assign("/login");
+    section.landing
+        .dark-overlay
+            .landing-inner
+                h1.x-large Developer Connector
+                p.lead
+                    | Create a developer profile/portfolio, share posts and get help from
+                    | other developers
+                .buttons
+                    a.btn.btn-primary(href='/register') Sign Up
+                    a.btn.btn-light(href='/login') Login

@@ -1,0 +1,92 @@
+extends base
+
+mixin currentStatus(status,value)
+    - if(status === value)
+        option(value=value selected)= value
+    - else
+        option(value=value)= value
+
+mixin socialLinksById(className,placeHolder,social)
+    .form-group.social-input
+        i(class=`fab fa-${className} fa-2x`)
+        input(type='text' placeholder=`${placeHolder} URL` name=`${className}` value=`${social ? social : ''}` id=`${className}`)
+
+
+
+mixin socialLinks()
+    .form-group.social-input
+        i.fab.fa-twitter.fa-2x
+        input#twitter(type='text' placeholder='Twitter URL' name='twitter')
+    .form-group.social-input
+        i.fab.fa-facebook.fa-2x
+        input#facebook(type='text' placeholder='Facebook URL' name='facebook')
+    .form-group.social-input
+        i.fab.fa-youtube.fa-2x
+        input#youtube(type='text' placeholder='YouTube URL' name='youtube')
+    .form-group.social-input
+        i.fab.fa-linkedin.fa-2x
+        input#linkedin(type='text' placeholder='Linkedin URL' name='linkedin')
+    .form-group.social-input
+        i.fab.fa-instagram.fa-2x
+        input#instagram(type='text' placeholder='Instagram URL' name='instagram')
+
+block content
+    section.container
+        h1.large.text-primary
+            | Create/Edit Your Profile
+        p.lead
+            i.fas.fa-user
+            |  Let&apos;s get some information to make your
+            |         profile stand out
+        small * = required field
+        form.form
+            .form-group
+                select#status(name='status')
+                    option(value='0') * Select Professional Status 
+                    +currentStatus(profile.status,'Developer')
+                    +currentStatus(profile.status,'Junior Developer')
+                    +currentStatus(profile.status,'Senior Developer')
+                    +currentStatus(profile.status,'Manager')
+                    +currentStatus(profile.status,'Student or Learning')
+                    +currentStatus(profile.status,'Instructor')
+                    +currentStatus(profile.status,'Intern')
+                    +currentStatus(profile.status,'Other')
+                small.form-text Give us an idea of where you are at in your career
+            .form-group
+                input(#companytype='text' placeholder='Company' name='company' value=`${profile.company ? profile.company : ''}`)
+                small.form-text Could be your own company or one you work for
+            .form-group
+                input#website(type='text' placeholder='Website' name='website' value=`${profile.website ? profile.website : ''}`)
+                small.form-text Could be your own or a company website
+            .form-group
+                input#location(type='text' placeholder='Location' name='location' value=`${profile.location ? profile.location : ''}`)
+                small.form-text City &amp; state suggested (eg. Boston, MA)
+            .form-group
+                input#skills(type='text' placeholder='* Skills' name='skills' value=`${profile.skills ? profile.skills : ''}`)
+                small.form-text
+                    | Please use comma separated values (eg.
+                    | HTML,CSS,JavaScript,PHP)
+            .form-group
+                input#githubUsername(type='text' placeholder='Github Username' name='githubusername' value=`${profile.githubUsername ? profile.githubUsername : ''}`)
+                small.form-text
+                    | If you want your latest repos and a Github link, include your
+                    | username
+            .form-group
+                textarea#bio(placeholder='A short bio of yourself' name='bio')= `${profile.bio ? profile.bio : ''}`
+                small.form-text Tell us a little about yourself
+            .my-2
+                button.btn.btn-light(type='button')
+                    | Add Social Network Links
+                span Optional
+
+            - if(!profile.social)
+                +socialLinks()
+            -else 
+                +socialLinksById('twitter','Twitter',profile.social.twitter)
+                +socialLinks('facebook','Facebook',profile.social.facebook)
+                +socialLinks('youtube','Youtube',profile.social.youtube)
+                +socialLinks('linkedin','Linkedin',profile.social.linkedin)
+                +socialLinks('instagram','Instagram',profile.social.instagram)
+
+            input#createProfile.btn.btn-primary.my-1(type='button' value='Submit')
+            a.btn.btn-light.my-1(href='dashboard.html') Go Back

@@ -1,0 +1,21 @@
+extends base
+
+block content
+    section.container
+        //- .alert.alert-danger
+        //-     | Invalid credentials
+        h1.large.text-primary Sign In
+        p.lead
+            i.fas.fa-user
+            |  Sign into Your Account
+        form.form
+            .form-group
+                input#email(type='email' placeholder='Email Address' name='email' required='')
+                label#eemail(style="color:red;")
+            .form-group
+                input#password(type='password' placeholder='Password' name='password')
+                label#epassword(style="color:red;")
+            input#login.btn.btn-primary(type='button' value='Login')
+        p.my-1
+            | Don&apos;t have an account? 
+            a(href='/register') Sign Up
