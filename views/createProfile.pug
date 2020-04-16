@@ -42,7 +42,7 @@ block content
         form.form
             .form-group
                 select#status(name='status')
-                    option(value='0') * Select Professional Status 
+                    option(value='') * Select Professional Status 
                     +currentStatus(profile.status,'Developer')
                     +currentStatus(profile.status,'Junior Developer')
                     +currentStatus(profile.status,'Senior Developer')
@@ -53,7 +53,7 @@ block content
                     +currentStatus(profile.status,'Other')
                 small.form-text Give us an idea of where you are at in your career
             .form-group
-                input(#companytype='text' placeholder='Company' name='company' value=`${profile.company ? profile.company : ''}`)
+                input#company(type='text' placeholder='Company' name='company' value=`${profile.company ? profile.company : ''}`)
                 small.form-text Could be your own company or one you work for
             .form-group
                 input#website(type='text' placeholder='Website' name='website' value=`${profile.website ? profile.website : ''}`)
@@ -81,12 +81,12 @@ block content
 
             - if(!profile.social)
                 +socialLinks()
-            -else 
+            - else 
                 +socialLinksById('twitter','Twitter',profile.social.twitter)
-                +socialLinks('facebook','Facebook',profile.social.facebook)
-                +socialLinks('youtube','Youtube',profile.social.youtube)
-                +socialLinks('linkedin','Linkedin',profile.social.linkedin)
-                +socialLinks('instagram','Instagram',profile.social.instagram)
+                +socialLinksById('facebook','Facebook',profile.social.facebook)
+                +socialLinksById('youtube','Youtube',profile.social.youtube)
+                +socialLinksById('linkedin','Linkedin',profile.social.linkedin)
+                +socialLinksById('instagram','Instagram',profile.social.instagram)
 
             input#createProfile.btn.btn-primary.my-1(type='button' value='Submit')
-            a.btn.btn-light.my-1(href='dashboard.html') Go Back
+            a.btn.btn-light.my-1(href='/dashboard') Go Back

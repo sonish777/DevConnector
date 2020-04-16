@@ -13,5 +13,10 @@ router.route("/profiles").get(viewController.getProfiles);
 router
   .route("/create-profile")
   .get(authController.protectRoute, viewController.createProfile);
+router
+  .route("/dashboard")
+  .get(authController.protectRoute, viewController.getDashboard);
+
+router.route("/profile/:devid").get(viewController.getDevProfile);
 
 module.exports = router;

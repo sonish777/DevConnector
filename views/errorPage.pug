@@ -1,0 +1,22 @@
+link(href='https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400' rel='stylesheet')
+link(rel='stylesheet' href='/css/errorpage.css')
+body
+    h1 #{statusCode || 500}
+    h2
+        | #{message || "Something went wrong"} 
+        b :(
+    .gears
+        .gear.one
+            .bar
+            .bar
+            .bar
+        .gear.two
+            .bar
+            .bar
+            .bar
+        .gear.three
+            .bar
+            .bar
+            .bar
+    script(src='https://code.jquery.com/jquery-1.10.2.js')
+    script(src='/js/main.js' type='text/javascript')

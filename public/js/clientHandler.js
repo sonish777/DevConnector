@@ -29,7 +29,7 @@ $(document).on("click", "#login", async (e) => {
 
     if (result.data.status === "success") {
       window.setTimeout(() => {
-        window.location.assign("/");
+        window.location.assign("/dashboard");
       }, 1500);
     }
   } catch (error) {
@@ -51,7 +51,7 @@ $(document).on("click", "#logout", async (e) => {
     if (result.data.status === "success") {
       window.setTimeout(() => {
         alert("Logged out successfully");
-        window.location.reload();
+        window.location.assign("/");
       }, 1500);
     }
   } catch (error) {
@@ -105,7 +105,52 @@ $(document).on("click", "#register", async (e) => {
   }
 });
 
-$(document).on("click", "#createProfile", (e) => {
+$(document).on("click", "#createProfile", async (e) => {
   e.preventDefault();
-  alert();
+  var status = $("#status").val();
+  var company = $("#company").val();
+  var website = $("#website").val();
+  var location = $("#location").val();
+  var skills = $("#skills").val();
+  var githubUsername = $("#githubUsername").val();
+  var bio = $("#bio").val();
+  var twitter = $("#twitter").val();
+  var facebook = $("#facebook").val();
+  var linkedin = $("#linkedin").val();
+  var instagram = $("#instagram").val();
+  var youtube = $("#youtube").val();
+
+  const body = {
+    status,
+    company,
+    website,
+    location,
+    skills,
+    githubUsername,
+    bio,
+    twitter,
+    facebook,
+    linkedin,
+    instagram,
+    youtube,
+  };
+  $("#createProfile").val("UPDATING...");
+  try {
+    const result = await axios({
+      method: "POST",
+      url: "http://localhost:8000/api/profiles",
+      data: body,
+    });
+
+    if (result.data.status === "success") {
+      console.log(result);
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
+  } catch (error) {
+    console.log(error);
+    $("#createProfile").val("Submit");
+    alert(error.response.data.message);
+  }
 });

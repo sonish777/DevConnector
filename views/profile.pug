@@ -1,0 +1,104 @@
+extends base
+
+mixin socialLink(socialLink)
+    a(href=`${socialLink}` target='_blank' rel='noopener noreferrer')
+        i.fab(class=`fa-${socialLink.split('.')[1]} fa-2x`)
+
+
+block content
+    section.container
+        a.btn.btn-light(href='/profiles') Back To Profiles
+        .profile-grid.my-1
+            // Top
+            .profile-top.bg-primary.p-2
+                img.round-img.my-1(src=`${profile.user.avatar}` alt='')
+                h1.large #{profile.user.name}
+                p.lead= `${profile.status} ${profile.company ? 'at '+profile.company : ''}`
+                p= `${profile.location}`
+                .icons.my-1
+                    each socialLink in profile.social
+                        +socialLink(socialLink)
+
+            // About
+            .profile-about.bg-light.p-2
+                h2.text-primary #{profile.user.name.split(' ')[0]}&apos;s Bio
+                p
+                    | #{profile.bio}
+                .line
+                h2.text-primary Skill Set
+                .skills
+                    each skill in profile.skills
+                        .p-1
+                            i.fa.fa-check
+                            |  #{skill}
+
+            // Experience
+            .profile-exp.bg-white.p-2
+                h2.text-primary Experience
+                each experience in profile.experiences
+                    div
+                        h3.text-dark #{experience.company}
+                        - let toDate ='';
+                        - const startDate = new Date(experience.from.split('T')[0]).toLocaleString('default',{ month: 'long', year:'numeric'})
+                        - if(experience.to) 
+                            - toDate = new Date(experience.to.split('T')[0]).toLocaleString('default',{ month: 'long', year: 'numeric'})
+                            
+                        p #{startDate} - #{experience.current ? 'Now' : toDate}
+                        p
+                            strong Position: 
+                            | #{experience.title}
+                        p
+                            strong Description: 
+                            | #{experience.description}
+
+            // Education
+            .profile-edu.bg-white.p-2
+                h2.text-primary Education
+                each education in profile.education
+                    div
+                        h3 #{education.school}
+                        - let toDate ='';
+                        - const startDate = new Date(education.from.split('T')[0]).toLocaleString('default',{ month: 'long', year:'numeric'})
+                        - if(education.to) 
+                            - toDate = new Date(education.to.split('T')[0]).toLocaleString('default',{ month: 'long', year: 'numeric'})
+                        p #{startDate} - #{education.current ? 'Now' : toDate}
+                        p
+                            strong Degree: 
+                            | #{education.degree}
+                        p
+                            strong Field Of Study: 
+                            | #{education.fieldOfStudy}
+                        p
+                            strong Description: 
+                            | #{education.description}
+            // Github
+            .profile-github
+                h2.text-primary.my-1
+                    - if(profile.githubUsername)
+                        i.fab.fa-github
+                        |  Github Repos for 
+                        span(style='text-decoration:underline')
+                            a(href=`https://github.com/${profile.githubUsername}` style='color:blue;' target='_blank' rel='noopener noreferrer') #{profile.githubUsername}
+                    
+                    - else
+                        i.fab.fa-github
+                        |  Github Repos
+                
+                - if(repos)
+                    each repo,i in repos
+                        .repo.bg-white.p-1.my-1
+                            div
+                                h4
+                                    a(href=`${repo.html_url}` target='_blank' rel='noopener noreferrer') Repository #{i + 1}: #{repo.name}
+                                p
+                                    - if(repo.description)
+                                        | #{repo.description}
+                                    - else
+                                        | No description provided.
+                            div
+                                ul
+                                    li.badge.badge-primary Stars: #{repo.stargazers_count}
+                                    li.badge.badge-dark Watchers: #{repo.watchers_count}
+                                    li.badge.badge-light Forks: #{repo.forks_count}
+                - else
+                    h4 * No Github Repositories

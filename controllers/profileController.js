@@ -42,6 +42,8 @@ const createSocialObject = (body) => {
 module.exports.createProfile = async (req, res, next) => {
   if (req.body.skills) {
     req.body.skills = req.body.skills.split(",").map((skill) => skill.trim());
+  } else {
+    return next(new AppError(400, "Please provide your skills"));
   }
   const socialObj = createSocialObject(req.body);
   if (socialObj != {} || socialObj || socialObj.length > 0) {
@@ -108,7 +110,7 @@ module.exports.getByUserId = async (req, res, next) => {
       profile,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (error.name === "CastError") {
       return next(
         new AppError(404, "The profile for given user ID was not found")
@@ -162,9 +164,6 @@ module.exports.deleteExperiece = async (req, res, next) => {
     if (removeIndex >= 0) profile.experiences.splice(removeIndex, 1);
     else
       return next(new AppError(404, "Experiece with given ID was not found"));
-
-    console.log(removeIndex);
-    console.log(profile.experiences[removeIndex]);
 
     await profile.save();
 
