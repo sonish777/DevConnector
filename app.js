@@ -23,6 +23,7 @@ app.use("/api/posts", postRoutes);
 app.use("/", viewRoutes);
 
 app.all("*", (req, res, next) => {
+  console.log(req.url);
   return next(new AppError(404, "The route was not found !"));
 });
 

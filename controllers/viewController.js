@@ -100,16 +100,57 @@ module.exports.getDevProfile = async (req, res, next) => {
             repos,
           });
         } catch (error) {
-          // console.log(error);
-          return next(new AppError(404, error.response.data.message));
+          return res.status(200).render("profile", {
+            profile,
+          });
         }
+      } else {
+        return res.status(200).render("profile", {
+          profile,
+        });
       }
-      res.status(200).render("profile", {
-        profile,
-      });
     }
   } catch (error) {
     // console.log();
     return next(new AppError(404, error.response.data.message));
   }
+};
+
+module.exports.getEduForm = async (req, res, next) => {
+  res.status(200).render("addEducation");
+};
+
+module.exports.getAllPosts = async (req, res, next) => {
+  try {
+    const result = await axios({
+      method: "GET",
+      url: "http://localhost:8000/api/posts",
+      headers: {
+        authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+    if (result.data.status === "success") {
+      res.locals.posts = result.data.data.posts;
+    }
+  } catch (error) {}
+  res.status(200).render("posts");
+};
+
+module.exports.getPostDiscussion = async (req, res, next) => {
+  const postId = req.params.postid;
+  try {
+    const result = await axios({
+      method: "GET",
+      url: `http://localhost:8000/api/posts/${postId}`,
+      headers: {
+        authorization: `Bearer ${req.cookies.jwt}`,
+      },
+    });
+    if (result.data.status === "success") {
+      res.locals.post = result.data.data.post;
+    }
+  } catch (error) {
+    return next(new AppError(500, "Something went wrong"));
+  }
+  res.status(200).render("post");
 };

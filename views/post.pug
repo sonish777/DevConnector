@@ -1,0 +1,36 @@
+extends base
+
+block content
+
+    section.container
+        a.btn(href='/posts') Back To Posts
+        .post.bg-white.p-1.my-1
+            div
+                a(href='profile.html')
+                    img.round-img(src=`${post.avatar}` alt='')
+                    h4 #{post.name}
+            div
+                p.my-1
+                    | #{post.text}
+        .post-form
+            .bg-primary.p
+                h3 Leave A Comment
+            form.form.my-1
+                textarea#commentText(name='text' cols='30' rows='5' placeholder='Comment on this post' required='')
+                input#postComment.btn.btn-dark.my-1(type='button' value='Submit' data-postid=`${post._id}`)
+        .comments
+            each comment in post.comments
+                .post.bg-white.p-1.my-1
+                    div
+                        a(href='/profiles')
+                            img.round-img(src=`${comment.avatar}` alt='')
+                            h4 #{comment.name}
+                    div
+                        p.my-1
+                            | #{comment.text}
+                        p.post-date
+                            -const date = comment.date.split("T")[0]
+                            | Posted on #{date}
+                        - if(comment.user === user.id)
+                            button#removeComment.btn.btn-danger(type='button' data-postid=`${post._id}` data-commentid=`${comment._id}`)
+                                i.fas.fa-times

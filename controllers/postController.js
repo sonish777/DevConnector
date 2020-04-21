@@ -74,7 +74,6 @@ module.exports.deleteMyPost = async (req, res, next) => {
     }
 
     // Check user
-    console.log(post.user, req.user.id);
     if (post.user.toString() != req.user.id) {
       return next(new AppError(401, "User not authorized"));
     }
@@ -228,9 +227,11 @@ module.exports.deleteComment = async (req, res, next) => {
     }
 
     // Get index of comment to remove
-    const removeIndex = post.comments
-      .map((comment) => comment.user.toString())
-      .indexOf(req.user.id);
+    // const removeIndex = post.comments
+    //   .map((comment) => comment.user.toString())
+    //   .indexOf(req.user.id);
+
+    const removeIndex = post.comments.findIndex((el) => el.id === comment.id);
 
     if (removeIndex < 0) {
       return next(new AppError(404, "Comment not found"));

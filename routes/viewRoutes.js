@@ -17,6 +17,18 @@ router
   .route("/dashboard")
   .get(authController.protectRoute, viewController.getDashboard);
 
+router
+  .route("/add-education")
+  .get(authController.protectRoute, viewController.getEduForm);
+
 router.route("/profile/:devid").get(viewController.getDevProfile);
+
+router
+  .route("/posts")
+  .get(authController.protectRoute, viewController.getAllPosts);
+
+router
+  .route("/post/:postid")
+  .get(authController.protectRoute, viewController.getPostDiscussion);
 
 module.exports = router;

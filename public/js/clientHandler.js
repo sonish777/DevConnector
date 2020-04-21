@@ -154,3 +154,207 @@ $(document).on("click", "#createProfile", async (e) => {
     alert(error.response.data.message);
   }
 });
+
+$(document).on("click", "#addEducation", async (e) => {
+  e.preventDefault();
+  const school = $("#school").val();
+  const degree = $("#degree").val();
+  const fieldOfStudy = $("#fieldOfStudy").val();
+  const from = $("#fromDate").val();
+  const to = $("#toDate").val();
+  const description = $("#description").val();
+  const current = $("#current").is(":checked");
+
+  $("#addEducation").val("SUBMITTING...");
+  try {
+    const result = await axios({
+      method: "POST",
+      url: "http://localhost:8000/api/profiles/education",
+      data: {
+        school,
+        degree,
+        fieldOfStudy,
+        from,
+        to,
+        description,
+        current,
+      },
+    });
+
+    if (result.data.status === "success") {
+      window.setTimeout(() => {
+        alert("Your education credentials has been addeds successfully !");
+        window.location.reload();
+      }, 1500);
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+    $("#addEducation").val("Submit");
+  }
+});
+
+$(document).on("click", "#deleteEducation", async function (e) {
+  e.preventDefault();
+  const eduId = $(this).data("eduid");
+  const school = $(this).data("title");
+  if (confirm(`Are you sure you want to delete '${school}' ?`)) {
+    $("#deleteEducation").text("REMOVING...");
+    try {
+      const result = await axios({
+        method: "DELETE",
+        url: `http://localhost:8000/api/profiles/education/${eduId}`,
+      });
+      if (result.data.status === "success") {
+        alert("Education credential deleted");
+        window.location.reload();
+      }
+    } catch (error) {
+      alert("Something went wrong ! Please try again");
+      $("#deleteEducation").text("Delete");
+    }
+  }
+});
+
+$(document).on("click", "#giveLike", async function (e) {
+  e.preventDefault();
+  const postId = $(this).data("postid");
+  if (!postId) {
+    return alert("Something went wrong");
+  }
+  try {
+    const result = await axios({
+      method: "PATCH",
+      url: `http://localhost:8000/api/posts/${postId}/like`,
+    });
+    if (result.data.status === "success") {
+      let likes = $(this).find("#likeCount").text();
+      likes = likes * 1 + 1;
+      $(this).find("#likeCount").text(likes);
+      $(this).find("#likeIcon").css("color", "blue");
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+});
+
+$(document).on("click", "#removeLike", async function (e) {
+  e.preventDefault();
+  const postId = $(this).data("postid");
+  // console.log($(this).prev().find("#likeCount").text());
+  if (!postId) {
+    return alert("Something went wrong");
+  }
+  try {
+    const result = await axios({
+      method: "PATCH",
+      url: `http://localhost:8000/api/posts/${postId}/unlike`,
+    });
+    if (result.data.status === "success") {
+      let likes = $(this).prev().find("#likeCount").text();
+      likes = likes * 1 - 1;
+      $(this).prev().find("#likeCount").text(likes);
+      $(this).prev().find("#likeIcon").css("color", "");
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+});
+
+$(document).on("click", "#post", async (e) => {
+  e.preventDefault();
+  let text = $("#postText").val();
+  text = text.trim();
+  if (text.length <= 0) {
+    return alert("Post cannot be empty !");
+  }
+  const data = {
+    text,
+  };
+  try {
+    const result = await axios({
+      method: "POST",
+      url: "http://localhost:8000/api/posts",
+      data,
+    });
+    if (result.data.status === "success") {
+      alert("Post created");
+      window.location.reload();
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+});
+
+$(document).on("click", "#removePost", async function (e) {
+  const postId = $(this).data("postid");
+  if (!postId) {
+    return alert("Something went wrong");
+  }
+
+  if (confirm("Are you sure you want to remove the post ?")) {
+    try {
+      const result = await axios({
+        method: "DELETE",
+        url: `http://localhost:8000/api/posts/${postId}`,
+      });
+      // console.log(result);
+      if (result.status === 204) {
+        alert("Post removed");
+        window.location.reload();
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  }
+});
+
+$(document).on("click", "#postComment", async function (e) {
+  e.preventDefault();
+  let commentText = $("#commentText").val();
+  commentText = commentText.trim();
+  if (commentText.length <= 0) {
+    return alert("Comment cannot be empty");
+  }
+  const postId = $(this).data("postid");
+  const data = {
+    text: commentText,
+  };
+  try {
+    const result = await axios({
+      method: "PATCH",
+      url: `http://localhost:8000/api/posts/${postId}/comment`,
+      data,
+    });
+    if (result.data.status === "success") {
+      alert("Comment posted");
+      window.location.reload();
+    }
+  } catch (error) {
+    console.log(error.response.data.message);
+  }
+});
+
+$(document).on("click", "#removeComment", async function (e) {
+  const commmentId = $(this).data("commentid");
+  const postId = $(this).data("postid");
+
+  if (!commmentId || !postId) {
+    return alert("Something went wrong");
+  }
+  try {
+    const result = await axios({
+      method: "DELETE",
+      url: `http://localhost:8000/api/posts/${postId}/comment/${commmentId}`,
+    });
+    if (result.data.status === "success") {
+      alert("Comment removed");
+      window.location.reload();
+    }
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+});
+
+// $(document).on("keypress", "postText", (e) => {
+//   alert();
+// });

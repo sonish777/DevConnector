@@ -8908,6 +8908,462 @@ $(document).on("click", "#createProfile", /*#__PURE__*/function () {
     return _ref4.apply(this, arguments);
   };
 }());
+$(document).on("click", "#addEducation", /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(e) {
+    var school, degree, fieldOfStudy, from, to, description, current, result;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            e.preventDefault();
+            school = $("#school").val();
+            degree = $("#degree").val();
+            fieldOfStudy = $("#fieldOfStudy").val();
+            from = $("#fromDate").val();
+            to = $("#toDate").val();
+            description = $("#description").val();
+            current = $("#current").is(":checked");
+            $("#addEducation").val("SUBMITTING...");
+            _context5.prev = 9;
+            _context5.next = 12;
+            return (0, _axios.default)({
+              method: "POST",
+              url: "http://localhost:8000/api/profiles/education",
+              data: {
+                school: school,
+                degree: degree,
+                fieldOfStudy: fieldOfStudy,
+                from: from,
+                to: to,
+                description: description,
+                current: current
+              }
+            });
+
+          case 12:
+            result = _context5.sent;
+
+            if (result.data.status === "success") {
+              window.setTimeout(function () {
+                alert("Your education credentials has been addeds successfully !");
+                window.location.reload();
+              }, 1500);
+            }
+
+            _context5.next = 20;
+            break;
+
+          case 16:
+            _context5.prev = 16;
+            _context5.t0 = _context5["catch"](9);
+            alert(_context5.t0.response.data.message);
+            $("#addEducation").val("Submit");
+
+          case 20:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[9, 16]]);
+  }));
+
+  return function (_x5) {
+    return _ref5.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#deleteEducation", /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee6(e) {
+    var eduId, school, result;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            e.preventDefault();
+            eduId = $(this).data("eduid");
+            school = $(this).data("title");
+
+            if (!confirm("Are you sure you want to delete '".concat(school, "' ?"))) {
+              _context6.next = 16;
+              break;
+            }
+
+            $("#deleteEducation").text("REMOVING...");
+            _context6.prev = 5;
+            _context6.next = 8;
+            return (0, _axios.default)({
+              method: "DELETE",
+              url: "http://localhost:8000/api/profiles/education/".concat(eduId)
+            });
+
+          case 8:
+            result = _context6.sent;
+
+            if (result.data.status === "success") {
+              alert("Education credential deleted");
+              window.location.reload();
+            }
+
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](5);
+            alert("Something went wrong ! Please try again");
+            $("#deleteEducation").text("Delete");
+
+          case 16:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, this, [[5, 12]]);
+  }));
+
+  return function (_x6) {
+    return _ref6.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#giveLike", /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee7(e) {
+    var postId, result, likes;
+    return regeneratorRuntime.wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            e.preventDefault();
+            postId = $(this).data("postid");
+
+            if (postId) {
+              _context7.next = 4;
+              break;
+            }
+
+            return _context7.abrupt("return", alert("Something went wrong"));
+
+          case 4:
+            _context7.prev = 4;
+            _context7.next = 7;
+            return (0, _axios.default)({
+              method: "PATCH",
+              url: "http://localhost:8000/api/posts/".concat(postId, "/like")
+            });
+
+          case 7:
+            result = _context7.sent;
+
+            if (result.data.status === "success") {
+              likes = $(this).find("#likeCount").text();
+              likes = likes * 1 + 1;
+              $(this).find("#likeCount").text(likes);
+              $(this).find("#likeIcon").css("color", "blue");
+            }
+
+            _context7.next = 14;
+            break;
+
+          case 11:
+            _context7.prev = 11;
+            _context7.t0 = _context7["catch"](4);
+            alert(_context7.t0.response.data.message);
+
+          case 14:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, this, [[4, 11]]);
+  }));
+
+  return function (_x7) {
+    return _ref7.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#removeLike", /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee8(e) {
+    var postId, result, likes;
+    return regeneratorRuntime.wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            e.preventDefault();
+            postId = $(this).data("postid"); // console.log($(this).prev().find("#likeCount").text());
+
+            if (postId) {
+              _context8.next = 4;
+              break;
+            }
+
+            return _context8.abrupt("return", alert("Something went wrong"));
+
+          case 4:
+            _context8.prev = 4;
+            _context8.next = 7;
+            return (0, _axios.default)({
+              method: "PATCH",
+              url: "http://localhost:8000/api/posts/".concat(postId, "/unlike")
+            });
+
+          case 7:
+            result = _context8.sent;
+
+            if (result.data.status === "success") {
+              likes = $(this).prev().find("#likeCount").text();
+              likes = likes * 1 - 1;
+              $(this).prev().find("#likeCount").text(likes);
+              $(this).prev().find("#likeIcon").css("color", "");
+            }
+
+            _context8.next = 14;
+            break;
+
+          case 11:
+            _context8.prev = 11;
+            _context8.t0 = _context8["catch"](4);
+            alert(_context8.t0.response.data.message);
+
+          case 14:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, this, [[4, 11]]);
+  }));
+
+  return function (_x8) {
+    return _ref8.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#post", /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee9(e) {
+    var text, data, result;
+    return regeneratorRuntime.wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            e.preventDefault();
+            text = $("#postText").val();
+            text = text.trim();
+
+            if (!(text.length <= 0)) {
+              _context9.next = 5;
+              break;
+            }
+
+            return _context9.abrupt("return", alert("Post cannot be empty !"));
+
+          case 5:
+            data = {
+              text: text
+            };
+            _context9.prev = 6;
+            _context9.next = 9;
+            return (0, _axios.default)({
+              method: "POST",
+              url: "http://localhost:8000/api/posts",
+              data: data
+            });
+
+          case 9:
+            result = _context9.sent;
+
+            if (result.data.status === "success") {
+              alert("Post created");
+              window.location.reload();
+            }
+
+            _context9.next = 16;
+            break;
+
+          case 13:
+            _context9.prev = 13;
+            _context9.t0 = _context9["catch"](6);
+            alert(_context9.t0.response.data.message);
+
+          case 16:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[6, 13]]);
+  }));
+
+  return function (_x9) {
+    return _ref9.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#removePost", /*#__PURE__*/function () {
+  var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee10(e) {
+    var postId, result;
+    return regeneratorRuntime.wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            postId = $(this).data("postid");
+
+            if (postId) {
+              _context10.next = 3;
+              break;
+            }
+
+            return _context10.abrupt("return", alert("Something went wrong"));
+
+          case 3:
+            if (!confirm("Are you sure you want to remove the post ?")) {
+              _context10.next = 14;
+              break;
+            }
+
+            _context10.prev = 4;
+            _context10.next = 7;
+            return (0, _axios.default)({
+              method: "DELETE",
+              url: "http://localhost:8000/api/posts/".concat(postId)
+            });
+
+          case 7:
+            result = _context10.sent;
+
+            // console.log(result);
+            if (result.status === 204) {
+              alert("Post removed");
+              window.location.reload();
+            }
+
+            _context10.next = 14;
+            break;
+
+          case 11:
+            _context10.prev = 11;
+            _context10.t0 = _context10["catch"](4);
+            alert(_context10.t0.response.data.message);
+
+          case 14:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, this, [[4, 11]]);
+  }));
+
+  return function (_x10) {
+    return _ref10.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#postComment", /*#__PURE__*/function () {
+  var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee11(e) {
+    var commentText, postId, data, result;
+    return regeneratorRuntime.wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            e.preventDefault();
+            commentText = $("#commentText").val();
+            commentText = commentText.trim();
+
+            if (!(commentText.length <= 0)) {
+              _context11.next = 5;
+              break;
+            }
+
+            return _context11.abrupt("return", alert("Comment cannot be empty"));
+
+          case 5:
+            postId = $(this).data("postid");
+            data = {
+              text: commentText
+            };
+            _context11.prev = 7;
+            _context11.next = 10;
+            return (0, _axios.default)({
+              method: "PATCH",
+              url: "http://localhost:8000/api/posts/".concat(postId, "/comment"),
+              data: data
+            });
+
+          case 10:
+            result = _context11.sent;
+
+            if (result.data.status === "success") {
+              alert("Comment posted");
+              window.location.reload();
+            }
+
+            _context11.next = 17;
+            break;
+
+          case 14:
+            _context11.prev = 14;
+            _context11.t0 = _context11["catch"](7);
+            console.log(_context11.t0.response.data.message);
+
+          case 17:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, this, [[7, 14]]);
+  }));
+
+  return function (_x11) {
+    return _ref11.apply(this, arguments);
+  };
+}());
+$(document).on("click", "#removeComment", /*#__PURE__*/function () {
+  var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee12(e) {
+    var commmentId, postId, result;
+    return regeneratorRuntime.wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            commmentId = $(this).data("commentid");
+            postId = $(this).data("postid");
+
+            if (!(!commmentId || !postId)) {
+              _context12.next = 4;
+              break;
+            }
+
+            return _context12.abrupt("return", alert("Something went wrong"));
+
+          case 4:
+            _context12.prev = 4;
+            _context12.next = 7;
+            return (0, _axios.default)({
+              method: "DELETE",
+              url: "http://localhost:8000/api/posts/".concat(postId, "/comment/").concat(commmentId)
+            });
+
+          case 7:
+            result = _context12.sent;
+
+            if (result.data.status === "success") {
+              alert("Comment removed");
+              window.location.reload();
+            }
+
+            _context12.next = 14;
+            break;
+
+          case 11:
+            _context12.prev = 11;
+            _context12.t0 = _context12["catch"](4);
+            alert(_context12.t0.response.data.message);
+
+          case 14:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, this, [[4, 11]]);
+  }));
+
+  return function (_x12) {
+    return _ref12.apply(this, arguments);
+  };
+}()); // $(document).on("keypress", "postText", (e) => {
+//   alert();
+// });
 },{"core-js/modules/es6.array.copy-within":"../../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.fill":"../../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.find":"../../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es7.array.flat-map":"../../node_modules/core-js/modules/es7.array.flat-map.js","core-js/modules/es6.array.from":"../../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es7.array.includes":"../../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es6.array.iterator":"../../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.array.of":"../../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.sort":"../../node_modules/core-js/modules/es6.array.sort.js","core-js/modules/es6.array.species":"../../node_modules/core-js/modules/es6.array.species.js","core-js/modules/es6.date.to-primitive":"../../node_modules/core-js/modules/es6.date.to-primitive.js","core-js/modules/es6.date.to-string":"../../node_modules/core-js/modules/es6.date.to-string.js","core-js/modules/es6.function.has-instance":"../../node_modules/core-js/modules/es6.function.has-instance.js","core-js/modules/es6.function.name":"../../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.map":"../../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.math.acosh":"../../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es6.number.constructor":"../../node_modules/core-js/modules/es6.number.constructor.js","core-js/modules/es6.number.epsilon":"../../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.is-finite":"../../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-nan":"../../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.is-safe-integer":"../../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.number.min-safe-integer":"../../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.parse-float":"../../node_modules/core-js/modules/es6.number.parse-float.js","core-js/modules/es6.number.parse-int":"../../node_modules/core-js/modules/es6.number.parse-int.js","core-js/modules/es6.object.assign":"../../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es7.object.define-getter":"../../node_modules/core-js/modules/es7.object.define-getter.js","core-js/modules/es7.object.define-setter":"../../node_modules/core-js/modules/es7.object.define-setter.js","core-js/modules/es7.object.entries":"../../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es6.object.freeze":"../../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.get-own-property-descriptor":"../../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es7.object.get-own-property-descriptors":"../../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es6.object.get-own-property-names":"../../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.get-prototype-of":"../../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es7.object.lookup-getter":"../../node_modules/core-js/modules/es7.object.lookup-getter.js","core-js/modules/es7.object.lookup-setter":"../../node_modules/core-js/modules/es7.object.lookup-setter.js","core-js/modules/es6.object.prevent-extensions":"../../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.to-string":"../../node_modules/core-js/modules/es6.object.to-string.js","core-js/modules/es6.object.is":"../../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.is-frozen":"../../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.keys":"../../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.seal":"../../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.set-prototype-of":"../../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es7.object.values":"../../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es6.promise":"../../node_modules/core-js/modules/es6.promise.js","core-js/modules/es7.promise.finally":"../../node_modules/core-js/modules/es7.promise.finally.js","core-js/modules/es6.reflect.apply":"../../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.regexp.constructor":"../../node_modules/core-js/modules/es6.regexp.constructor.js","core-js/modules/es6.regexp.flags":"../../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.regexp.to-string":"../../node_modules/core-js/modules/es6.regexp.to-string.js","core-js/modules/es6.set":"../../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.symbol":"../../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es7.symbol.async-iterator":"../../node_modules/core-js/modules/es7.symbol.async-iterator.js","core-js/modules/es6.string.anchor":"../../node_modules/core-js/modules/es6.string.anchor.js","core-js/modules/es6.string.big":"../../node_modules/core-js/modules/es6.string.big.js","core-js/modules/es6.string.blink":"../../node_modules/core-js/modules/es6.string.blink.js","core-js/modules/es6.string.bold":"../../node_modules/core-js/modules/es6.string.bold.js","core-js/modules/es6.string.code-point-at":"../../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.ends-with":"../../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.fixed":"../../node_modules/core-js/modules/es6.string.fixed.js","core-js/modules/es6.string.fontcolor":"../../node_modules/core-js/modules/es6.string.fontcolor.js","core-js/modules/es6.string.fontsize":"../../node_modules/core-js/modules/es6.string.fontsize.js","core-js/modules/es6.string.from-code-point":"../../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.includes":"../../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.string.italics":"../../node_modules/core-js/modules/es6.string.italics.js","core-js/modules/es6.string.iterator":"../../node_modules/core-js/modules/es6.string.iterator.js","core-js/modules/es6.string.link":"../../node_modules/core-js/modules/es6.string.link.js","core-js/modules/es7.string.pad-start":"../../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/es6.string.raw":"../../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.repeat":"../../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.small":"../../node_modules/core-js/modules/es6.string.small.js","core-js/modules/es6.string.starts-with":"../../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.strike":"../../node_modules/core-js/modules/es6.string.strike.js","core-js/modules/es6.string.sub":"../../node_modules/core-js/modules/es6.string.sub.js","core-js/modules/es6.string.sup":"../../node_modules/core-js/modules/es6.string.sup.js","core-js/modules/es7.string.trim-left":"../../node_modules/core-js/modules/es7.string.trim-left.js","core-js/modules/es7.string.trim-right":"../../node_modules/core-js/modules/es7.string.trim-right.js","core-js/modules/es6.typed.array-buffer":"../../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.data-view":"../../node_modules/core-js/modules/es6.typed.data-view.js","core-js/modules/es6.typed.int8-array":"../../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.weak-map":"../../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/web.timers":"../../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../../node_modules/regenerator-runtime/runtime.js","axios":"../../node_modules/axios/index.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -8936,7 +9392,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51007" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62473" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

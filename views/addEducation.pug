@@ -1,0 +1,32 @@
+extends base
+
+block content
+    section.container
+        h1.large.text-primary
+            | Add Your Education
+        p.lead
+            i.fas.fa-graduation-cap
+            |  Add any school, bootcamp, etc that
+            |         you have attended
+        small * = required field
+        form.form
+            .form-group
+                input#school(type='text' placeholder='* School or Bootcamp' name='school' required='')
+            .form-group
+                input#degree(type='text' placeholder='* Degree or Certificate' name='degree' required='')
+            .form-group
+                input#fieldOfStudy(type='text' placeholder='Field Of Study' name='fieldofstudy')
+            .form-group
+                h4 From Date
+                input#fromDate(type='date' name='from')
+            .form-group
+                p
+                    input#current(type='checkbox' name='current' value='')
+                    |  Current School or Bootcamp
+            .form-group
+                h4 To Date
+                input#toDate(type='date' name='to')
+            .form-group
+                textarea#description(name='description' cols='30' rows='5' placeholder='Program Description')
+            input#addEducation.btn.btn-primary.my-1(type='button' value='Submit')
+            a.btn.btn-light.my-1(href='/dashboard') Go Back

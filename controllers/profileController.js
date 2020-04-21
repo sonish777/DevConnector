@@ -244,7 +244,7 @@ module.exports.getGetRepos = async (req, res, next) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    return next(new AppError(500, "Something went wrong"));
+    // console.log("PROFILE CONTROLLER");
+    return next();
   }
 };

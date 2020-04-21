@@ -10,7 +10,7 @@ router
 
 router
   .route("/:id")
-  .get(postController.getOnePost)
+  .get(authController.protectRoute, postController.getOnePost)
   .delete(authController.protectRoute, postController.deleteMyPost);
 
 router

@@ -11,63 +11,77 @@ block content
             a.btn.btn-light(href='/create-profile')
                 i.fas.fa-user-circle.text-primary
                 |  Edit Profile
-            a.btn.btn-light(href='add-experience.html')
-                i.fab.fa-black-tie.text-primary
-                |  Add Experience
-            a.btn.btn-light(href='add-education.html')
-                i.fas.fa-graduation-cap.text-primary
-                |  Add Education
+            - if(profile)
+                a.btn.btn-light(href='add-experience.html')
+                    i.fab.fa-black-tie.text-primary
+                    |  Add Experience
+                a.btn.btn-light(href='/add-education')
+                    i.fas.fa-graduation-cap.text-primary
+                    |  Add Education
+            - else
+                a.btn.btn-light(href='add-experience.html' style="pointer-events: none; color:lightgrey;")
+                    i.fab.fa-black-tie.text-primary
+                    |  Add Experience
+                a.btn.btn-light(href='/add-education' style="pointer-events: none; color:lightgrey;")
+                    i.fas.fa-graduation-cap.text-primary
+                    |  Add Education
         h2.my-2 Experience Credentials
-        table.table
-            thead
-                tr
-                    th Company
-                    th.hide-sm Title
-                    th.hide-sm Years
-                    th
-            tbody
-                - if(profile.experiences.length > 0)
-                    each experience in profile.experiences
-                        tr
-                            td= `${experience.company}`
-                            td.hide-sm= `${experience.title}`
-                            - const startDate = experience.from.split('T')[0]
-                            td.hide-sm
-                                | #{startDate} - #{experience.current ? 'Now' : experience.to.split('T')[0]}
-                            td
-                                button.btn.btn-danger
-                                    | Delete
-                - else
+        - if(profile)
+            table.table
+                thead
                     tr
-                        td(colspan='4')
-                            b(style='color:red;')
-                                | You haven't added any experinces yet !
-        h2.my-2 Education Credentials
-        table.table
-            thead
-                tr
-                    th School
-                    th.hide-sm Degree
-                    th.hide-sm Years
-                    th
-            tbody
-                - if(profile.education.length > 0)
-                    each education in profile.education
+                        th Company
+                        th.hide-sm Title
+                        th.hide-sm Years
+                        th
+                tbody
+                    - if(profile.experiences.length > 0)
+                        each experience in profile.experiences
+                            tr
+                                td= `${experience.company}`
+                                td.hide-sm= `${experience.title}`
+                                - const startDate = experience.from.split('T')[0]
+                                td.hide-sm
+                                    | #{startDate} - #{experience.current ? 'Now' : experience.to.split('T')[0]}
+                                td
+                                    button.btn.btn-danger
+                                        | Delete
+                    - else
                         tr
-                            td= `${education.school}`
-                            td.hide-sm= `${education.degree}`
-                            - const startDate = education.from.split('T')[0]
-                            td.hide-sm
-                                | #{startDate} - #{education.current ? 'Now' : education.to.split('T')[0]}
-                            td
-                                button.btn.btn-danger
-                                    | Delete
-                - else
+                            td(colspan='4')
+                                b(style='color:red;')
+                                    | You haven't added any experinces yet !
+            h2.my-2 Education Credentials
+            table.table
+                thead
                     tr
-                        td(colspan='4')
-                            b(style='color:red;')
-                                | You haven't added any education credentials yet !
-        .my-2
-            button.btn.btn-danger
-                i.fas.fa-user-minus
-                |                 Delete My Account
+                        th School
+                        th.hide-sm Degree
+                        th.hide-sm Years
+                        th
+                tbody
+                    - if(profile.education.length > 0)
+                        each education in profile.education
+                            tr
+                                td= `${education.school}`
+                                td.hide-sm= `${education.degree}`
+                                - let toDate = ''
+                                - const startDate = education.from.split('T')[0]
+                                - if(education.to)
+                                    -toDate = education.to.split('T')[0]
+                                td.hide-sm
+                                    | #{startDate} - #{education.current ? 'Now' : toDate}
+                                td
+                                    button#deleteEducation.btn.btn-danger(data-eduid=`${education._id}` data-title=`${education.school}`)
+                                        | Delete
+                    - else
+                        tr
+                            td(colspan='4')
+                                b(style='color:red;')
+                                    | You haven't added any education credentials yet !
+            .my-2
+                button.btn.btn-danger
+                    i.fas.fa-user-minus
+                    |                 Delete My Account
+        - else 
+            h2 Please create your profile first !
