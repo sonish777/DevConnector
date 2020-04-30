@@ -1,9 +1,11 @@
 nav.navbar.bg-dark
     h1
+        a.ham-icon-link
+            i#ham-icon(class="fas fa-bars")
         a(href='/')
             i.fas.fa-code
             |  DevConnector
-    ul
+    ul.main-nav__links
         li
             a(href='/profiles') Developers
 
@@ -24,3 +26,32 @@ nav.navbar.bg-dark
                 a(href='/register') Register
             li
                 a(href='/login') Login
+
+nav.side-nav
+    ul.side-nav__links
+        - if(user)
+            li.side-nav__link(id='avatar')
+                img.avatar(src=`/img/avatars/${user.avatar}` alt=`${user.avatar}`)
+        li.side-nav__link
+            a(href='/profiles') Developers
+
+        - if(user)
+            li.side-nav__link
+                a(href='/posts') Posts
+            li.side-nav__link
+                |
+                a(href='/dashboard' title='Dashboard')
+                    span Dashboard
+                    | 
+                    i.fas.fa-user
+            li.side-nav__link
+                a#logout(href="#" title='Logout')
+                    span#logouttext Logout
+                    | 
+                    i.fas.fa-sign-out-alt
+        - else
+            li.side-nav__link
+                a(href='/register') Register
+            li.side-nav__link
+                a(href='/login') Login
+

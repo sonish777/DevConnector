@@ -7,12 +7,14 @@ const userRoutes = require("./routes/userRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const postRoutes = require("./routes/postRoutes");
 const viewRoutes = require("./routes/viewRoutes");
+const bodyParser = require("body-parser");
 
 const app = express();
 
 app.set("view engine", "pug");
 
 app.use(express.json());
+// app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
 app.use(express.static(`${__dirname}/public`));

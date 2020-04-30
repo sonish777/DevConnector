@@ -74,6 +74,9 @@ block content
             .form-group
                 textarea#bio(placeholder='A short bio of yourself' name='bio')= `${profile.bio ? profile.bio : ''}`
                 small.form-text Tell us a little about yourself
+            .form-group
+                img#avatarPreview(src=`/img/avatars/${profile.user.avatar}`)
+                input#avatarFile(type='file' accept='image/*')
             .my-2
                 button.btn.btn-light(type='button')
                     | Add Social Network Links

@@ -18,7 +18,7 @@ block content
                 .post.bg-white.p-1.my-1
                     div
                         a(href=`/profiles`)
-                            img.round-img(src=`${post.avatar}` alt='')
+                            img.round-img(src=`/img/avatars/${post.avatar}` alt=`${post.avatar}`)
                             h4= `${post.name}`
                     div
                         p.my-1
@@ -26,18 +26,26 @@ block content
                         p.post-date
                             - const date = post.date.split("T")[0]
                             | Posted on #{date}
-                        button#giveLike.btn.btn-light(type='button' data-postid=`${post._id}`)
-                            - const liked = post.like.filter((el) => { return el.user === user.id })
-                            - if(liked.length > 0)
-                                i#likeIcon.fas.fa-thumbs-up(style="color:blue;")
-                            -else
-                                i#likeIcon.fas.fa-thumbs-up
-                            span#likeCount #{post.like.length}
-                        button#removeLike.btn.btn-light(type='button' data-postid=`${post._id}`)
-                            i.fas.fa-thumbs-down
-                        a.btn.btn-primary(href=`/post/${post._id}`)
-                            | Discussion 
-                            span.comment-count #{post.comments.length}
+                        div.like-div
+                            button#giveLike.btn.btn-light(type='button' data-postid=`${post._id}`)
+                                - const liked = post.like.filter((el) => { return el.user._id === user.id })
+                                - if(liked.length > 0)
+                                    i#likeIcon.fas.fa-thumbs-up(style="color:blue;")
+                                -else
+                                    i#likeIcon.fas.fa-thumbs-up
+                                span#likeCount #{post.like.length}
+                            div.like-lists
+                                ul
+                                    - if(post.like.length>0)
+                                        each like in post.like
+                                            li #{like.user.name}
+                                    - else
+                                        p No likes yet !
+                            button#removeLike.btn.btn-light(type='button' data-postid=`${post._id}`)
+                                i.fas.fa-thumbs-down
+                            a.btn.btn-primary(href=`/post/${post._id}`)
+                                | Discussion 
+                                span.comment-count #{post.comments.length}
                         - if(post.user === user.id)
                             button#removePost.btn.btn-danger(type='button' data-postid=`${post._id}`)
                                 i.fas.fa-times

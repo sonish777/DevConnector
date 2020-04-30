@@ -11,7 +11,7 @@ block content
         .profiles
         each developer in developers
                 .profile.bg-light
-                    img.round-img(src= `${developer.user.avatar}` alt='')
+                    img.round-img(src=`/img/avatars/${developer.user.avatar}` alt=`${developer.user.avatar}`)
                     div
                         h2= `${developer.user.name}`
                         p= `${developer.status} ${developer.company ? 'at '+developer.company : ''}`

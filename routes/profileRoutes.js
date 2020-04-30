@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
+// const multer = require("multer");
 
+const AppError = require("../utils/AppError");
 const authController = require("../controllers/authController");
 const profileController = require("../controllers/profileController");
 
@@ -8,7 +10,12 @@ router
   .route("/")
   .get(profileController.getAllProfile)
   .delete(authController.protectRoute, profileController.deleteMe)
-  .post(authController.protectRoute, profileController.createProfile);
+  .post(
+    authController.protectRoute,
+    profileController.uploadImage,
+    profileController.resizeImage,
+    profileController.createProfile
+  );
 
 router.route("/user/:id").get(profileController.getByUserId);
 

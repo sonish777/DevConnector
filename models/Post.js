@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const postSchema = new mongoose.Schema({
   user: {
@@ -50,6 +51,18 @@ const postSchema = new mongoose.Schema({
     default: Date.now(),
   },
 });
+
+postSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "like.user",
+  });
+  next();
+});
+
+// postSchema.post(/^find/, function (doc, next) {
+//   console.log(doc);
+//   next();
+// });
 
 const Post = mongoose.model("Post", postSchema);
 

@@ -105,7 +105,8 @@ module.exports.postLike = async (req, res, next) => {
     }
 
     if (
-      post.like.filter((el) => el.user.toString() === req.user.id).length > 0
+      post.like.filter((el) => el.user._id.toString() === req.user.id).length >
+      0
     ) {
       return next(new AppError(400, "Post alredy liked"));
     }
@@ -138,13 +139,15 @@ module.exports.removeLike = async (req, res, next) => {
     }
 
     if (
-      post.like.filter((el) => el.user.toString() === req.user.id).length === 0
+      post.like.filter((el) => el.user._id.toString() === req.user.id)
+        .length === 0
     ) {
+      // console.log();
       return next(new AppError(400, "Post has not yet been liked"));
     }
 
     const removeIndex = post.like
-      .map((like) => like.user.toString())
+      .map((like) => like.user._id.toString())
       .indexOf(req.user.id);
 
     if (removeIndex < 0) {

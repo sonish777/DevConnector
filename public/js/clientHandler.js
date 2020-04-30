@@ -1,7 +1,23 @@
 import "@babel/polyfill";
 import axios from "axios";
+import { showAlertBox } from "./alert.js";
+
+$(document).on("click", "#ham-icon", () => {
+  $("#backdrop").fadeIn();
+  $(".side-nav").animate({
+    width: "toggle",
+  });
+});
+
+$(document).on("click", "#backdrop", () => {
+  $("#backdrop").fadeOut();
+  $(".side-nav").animate({
+    width: "toggle",
+  });
+});
 
 $(document).on("click", "#login", async (e) => {
+  // showAlertBox("Hello", "fail");
   e.preventDefault();
   $("#eemail").text("");
   $("#epassword").text("");
@@ -28,12 +44,14 @@ $(document).on("click", "#login", async (e) => {
     });
 
     if (result.data.status === "success") {
+      showAlertBox("Logged in successfully", "success");
       window.setTimeout(() => {
         window.location.assign("/dashboard");
-      }, 1500);
+      }, 1600);
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
     $("#login").val("Login");
   }
 });
@@ -49,8 +67,8 @@ $(document).on("click", "#logout", async (e) => {
 
     console.log(result);
     if (result.data.status === "success") {
+      showAlertBox("Logged out successfully", "success");
       window.setTimeout(() => {
-        alert("Logged out successfully");
         window.location.assign("/");
       }, 1500);
     }
@@ -95,12 +113,14 @@ $(document).on("click", "#register", async (e) => {
     });
 
     if (result.data.status === "success") {
+      showAlertBox("Registered successfully", "success");
       window.setTimeout(() => {
         window.location.assign("/create-profile");
       }, 1500);
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.resonse.data.message, "fail");
     $("#register").val("Register");
   }
 });
@@ -119,31 +139,36 @@ $(document).on("click", "#createProfile", async (e) => {
   var linkedin = $("#linkedin").val();
   var instagram = $("#instagram").val();
   var youtube = $("#youtube").val();
+  var image = $("#avatarFile").prop("files")[0];
 
-  const body = {
-    status,
-    company,
-    website,
-    location,
-    skills,
-    githubUsername,
-    bio,
-    twitter,
-    facebook,
-    linkedin,
-    instagram,
-    youtube,
-  };
+  const form = new FormData();
+  form.append("image", image);
+  form.append("status", status);
+  form.append("company", company);
+  form.append("website", website);
+  form.append("location", location);
+  form.append("skills", skills);
+  form.append("githubUsername", githubUsername);
+  form.append("bio", bio);
+  form.append("twitter", twitter);
+  form.append("facebook", facebook);
+  form.append("linkedin", linkedin);
+  form.append("youtube", youtube);
+  form.append("instagram", instagram);
+
+  console.log(form);
+
   $("#createProfile").val("UPDATING...");
   try {
     const result = await axios({
       method: "POST",
       url: "http://localhost:8000/api/profiles",
-      data: body,
+      data: form,
     });
 
     if (result.data.status === "success") {
-      console.log(result);
+      // console.log(result);
+      showAlertBox("Profile updated successfully", "success");
       window.setTimeout(() => {
         window.location.reload();
       }, 1500);
@@ -151,7 +176,8 @@ $(document).on("click", "#createProfile", async (e) => {
   } catch (error) {
     console.log(error);
     $("#createProfile").val("Submit");
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
   }
 });
 
@@ -182,13 +208,15 @@ $(document).on("click", "#addEducation", async (e) => {
     });
 
     if (result.data.status === "success") {
+      showAlertBox("Education credentials added", "success");
       window.setTimeout(() => {
-        alert("Your education credentials has been addeds successfully !");
+        // alert("Your education credentials has been addeds successfully !");
         window.location.reload();
       }, 1500);
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
     $("#addEducation").val("Submit");
   }
 });
@@ -205,11 +233,15 @@ $(document).on("click", "#deleteEducation", async function (e) {
         url: `http://localhost:8000/api/profiles/education/${eduId}`,
       });
       if (result.data.status === "success") {
-        alert("Education credential deleted");
-        window.location.reload();
+        // alert("Education credential deleted");
+        showAlertBox("Education credentials deleted", "success");
+        window.setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
-      alert("Something went wrong ! Please try again");
+      // alert("Something went wrong ! Please try again");
+      showAlertBox("Something went wrong", "fail");
       $("#deleteEducation").text("Delete");
     }
   }
@@ -219,7 +251,7 @@ $(document).on("click", "#giveLike", async function (e) {
   e.preventDefault();
   const postId = $(this).data("postid");
   if (!postId) {
-    return alert("Something went wrong");
+    return showAlertBox("Something went wrong", "fail");
   }
   try {
     const result = await axios({
@@ -227,13 +259,15 @@ $(document).on("click", "#giveLike", async function (e) {
       url: `http://localhost:8000/api/posts/${postId}/like`,
     });
     if (result.data.status === "success") {
+      showAlertBox("Post liked", "success");
       let likes = $(this).find("#likeCount").text();
       likes = likes * 1 + 1;
       $(this).find("#likeCount").text(likes);
       $(this).find("#likeIcon").css("color", "blue");
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
   }
 });
 
@@ -242,7 +276,8 @@ $(document).on("click", "#removeLike", async function (e) {
   const postId = $(this).data("postid");
   // console.log($(this).prev().find("#likeCount").text());
   if (!postId) {
-    return alert("Something went wrong");
+    // return alert("Something went wrong");
+    return showAlertBox("Something went wrong", "fail");
   }
   try {
     const result = await axios({
@@ -250,14 +285,30 @@ $(document).on("click", "#removeLike", async function (e) {
       url: `http://localhost:8000/api/posts/${postId}/unlike`,
     });
     if (result.data.status === "success") {
-      let likes = $(this).prev().find("#likeCount").text();
+      showAlertBox("Post unliked", "success");
+      // console.log("HELLO");
+      // console.log($(this).prev());
+
+      let likes = $(this).prev().prev().find("#likeCount").text();
       likes = likes * 1 - 1;
-      $(this).prev().find("#likeCount").text(likes);
-      $(this).prev().find("#likeIcon").css("color", "");
+      $(this).prev().prev().find("#likeCount").text(likes);
+      $(this).prev().prev().find("#likeIcon").css("color", "");
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
   }
+});
+
+$(document).on("mouseover", "#giveLike", function () {
+  // alert();
+  // console.log($(this).next());
+  // console.log($(this).closest(".like-lists"));
+  $(this).next().fadeIn();
+});
+
+$(document).on("mouseleave", "#giveLike", () => {
+  $(".like-lists").fadeOut();
 });
 
 $(document).on("click", "#post", async (e) => {
@@ -265,7 +316,8 @@ $(document).on("click", "#post", async (e) => {
   let text = $("#postText").val();
   text = text.trim();
   if (text.length <= 0) {
-    return alert("Post cannot be empty !");
+    // return alert("Post cannot be empty !");
+    return showAlertBox("Post cannot be empty", "fail");
   }
   const data = {
     text,
@@ -277,18 +329,22 @@ $(document).on("click", "#post", async (e) => {
       data,
     });
     if (result.data.status === "success") {
-      alert("Post created");
-      window.location.reload();
+      // alert("Post created");
+      showAlertBox("Post created", "success");
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox("Something went wrong", "fail");
   }
 });
 
 $(document).on("click", "#removePost", async function (e) {
   const postId = $(this).data("postid");
   if (!postId) {
-    return alert("Something went wrong");
+    return showAlertBox("Something went wrong", "fail");
   }
 
   if (confirm("Are you sure you want to remove the post ?")) {
@@ -299,11 +355,15 @@ $(document).on("click", "#removePost", async function (e) {
       });
       // console.log(result);
       if (result.status === 204) {
-        alert("Post removed");
-        window.location.reload();
+        // alert("Post removed");
+        showAlertBox("Post removed", "success");
+        window.setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       }
     } catch (error) {
-      alert(error.response.data.message);
+      // alert(error.response.data.message);
+      showAlertBox(error.response.data.message, "fail");
     }
   }
 });
@@ -313,7 +373,7 @@ $(document).on("click", "#postComment", async function (e) {
   let commentText = $("#commentText").val();
   commentText = commentText.trim();
   if (commentText.length <= 0) {
-    return alert("Comment cannot be empty");
+    return showAlertBox("Comment cannot be empty", "fail");
   }
   const postId = $(this).data("postid");
   const data = {
@@ -326,11 +386,15 @@ $(document).on("click", "#postComment", async function (e) {
       data,
     });
     if (result.data.status === "success") {
-      alert("Comment posted");
-      window.location.reload();
+      // alert("Comment posted");
+      showAlertBox("Comment posted", "success");
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }
   } catch (error) {
-    console.log(error.response.data.message);
+    // console.log(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
   }
 });
 
@@ -339,7 +403,7 @@ $(document).on("click", "#removeComment", async function (e) {
   const postId = $(this).data("postid");
 
   if (!commmentId || !postId) {
-    return alert("Something went wrong");
+    return showAlertBox("Something went wrong", "fail");
   }
   try {
     const result = await axios({
@@ -347,11 +411,15 @@ $(document).on("click", "#removeComment", async function (e) {
       url: `http://localhost:8000/api/posts/${postId}/comment/${commmentId}`,
     });
     if (result.data.status === "success") {
-      alert("Comment removed");
-      window.location.reload();
+      // alert("Comment removed");
+      showAlertBox("Commment removed", "success");
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 1500);
     }
   } catch (error) {
-    alert(error.response.data.message);
+    // alert(error.response.data.message);
+    showAlertBox(error.response.data.message, "fail");
   }
 });
 

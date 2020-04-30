@@ -1,13 +1,14 @@
 const AppError = require("../utils/AppError");
 const Profile = require("../models/Profile");
 const axios = require("axios");
+const path = require("path");
 
 module.exports.getHome = async (req, res) => {
   res.status(200).render("landing");
 };
 
 module.exports.getLogin = async (req, res) => {
-  res.status(200).render("login");
+  res.status(200).render(`login`);
 };
 
 module.exports.getRegister = async (req, res) => {
@@ -130,6 +131,10 @@ module.exports.getAllPosts = async (req, res, next) => {
       },
     });
     if (result.data.status === "success") {
+      // console.log(result.data.data.posts);
+      result.data.data.posts.forEach((post) => {
+        console.log(post.like);
+      });
       res.locals.posts = result.data.data.posts;
     }
   } catch (error) {}

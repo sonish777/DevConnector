@@ -11,7 +11,7 @@ block content
         .profile-grid.my-1
             // Top
             .profile-top.bg-primary.p-2
-                img.round-img.my-1(src=`${profile.user.avatar}` alt='')
+                img.round-img.my-1(src=`/img/avatars/${profile.user.avatar}` alt=`${profile.user.avatar}`)
                 h1.large #{profile.user.name}
                 p.lead= `${profile.status} ${profile.company ? 'at '+profile.company : ''}`
                 p= `${profile.location}`

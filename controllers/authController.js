@@ -13,16 +13,8 @@ module.exports.protectRoute = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
-    // console.log("------------------------------------------");
-    // console.log("URL = ", req.originalUrl);
-    // console.log("TOKEN FROM AUTHORIZATION = ", token);
-    // console.log("------------------------------------------");
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
-    // console.log("------------------------------------------");
-    // console.log("URL = ", req.originalUrl);
-    // console.log("TOKEN FROM COOKIE = ", token);
-    // console.log("------------------------------------------");
   }
 
   if (token === "") {
@@ -37,7 +29,8 @@ module.exports.protectRoute = async (req, res, next) => {
       return next(new AppError(404, "User for bearer token not found"));
     }
 
-    req.user = user;
+    req.user = user; // THIS IS FOR POSTMAN API TESTING ONLY.......
+    // HERE YOU CAN JUST CALL THE next() TO GO TO THE NEXT MIDDLEWARE AS DONE BELOW
     next();
   } catch (error) {
     return next(new AppError(500, error.message));
@@ -94,7 +87,13 @@ module.exports.isLoggedIn = async (req, res, next) => {
   if (!user) {
     return next();
   }
-
+  /*
+      -----------------------------------IMPORTANT-------------------------
+      FOR PASSING THE USER VARIABLE TO A PUG FILE, YOU SET IT ON THE LOCALS VARIABLES OF RESPONSE
+      EXAMPLE ------> res.locals.user = user;
+      INSIDE THE PUG FILE YOU WILL USE THE VARIABLE user TO ACCESS IT.
+      SEE BELOW FOR EXAMPLE
+    */
   res.locals.user = user;
   next();
 };

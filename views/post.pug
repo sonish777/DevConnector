@@ -7,7 +7,7 @@ block content
         .post.bg-white.p-1.my-1
             div
                 a(href='profile.html')
-                    img.round-img(src=`${post.avatar}` alt='')
+                    img.round-img(src=`/img/avatars/${post.avatar}` alt='')
                     h4 #{post.name}
             div
                 p.my-1
@@ -23,7 +23,7 @@ block content
                 .post.bg-white.p-1.my-1
                     div
                         a(href='/profiles')
-                            img.round-img(src=`${comment.avatar}` alt='')
+                            img.round-img(src=`/img/avatars/${comment.avatar}` alt='')
                             h4 #{comment.name}
                     div
                         p.my-1

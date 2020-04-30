@@ -4,9 +4,11 @@ block content
     section.container
         h1.large.text-primary
             | Dashboard
-        p.lead
-            i.fas.fa-user
-            |  Welcome #{user.name}
+        img.avatarPreview(src=`/img/avatars/${user.avatar}`)
+        .intro
+            p.lead
+                |  Welcome #{user.name}
+
         .dash-buttons
             a.btn.btn-light(href='/create-profile')
                 i.fas.fa-user-circle.text-primary
