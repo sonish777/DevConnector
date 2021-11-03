@@ -25,6 +25,6 @@
     "parcel-bundler": "^1.12.4",
     "pug": "^2.0.4",
     "sharp": "^0.25.2",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   }
 }
